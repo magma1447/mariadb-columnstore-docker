@@ -44,7 +44,8 @@ echo -n "Waiting CMAPI to finish startup on PM1"
 success=false
 for i in  $(seq 1 $SEC_TO_WAIT); do
     echo -n "..$i"
-    if ! $(mcs cmapi is-ready > /dev/null); then
+    #if ! $(mcs cmapi is-ready > /dev/null); then
+    if ! curl -s -k -H "x-api-key: ${CMAPI_KEY}" https://localhost:8640/cmapi/0.4.0/cluster/status | grep -q "timestamp"; then
         sleep 1
     else
         success=true
