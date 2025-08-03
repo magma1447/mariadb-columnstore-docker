@@ -1,7 +1,7 @@
 # vim:set ft=dockerfile:
 
 # Setup A Template Image
-FROM rockylinux:8 as base
+FROM rockylinux:8.8 as base
 
 # Define Development ARGs
 ARG ENTERPRISE=${ENTERPRISE}
