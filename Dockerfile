@@ -44,8 +44,21 @@ RUN if [[ "${DEV}" == true ]]; then \
     "enabled = 1" \
     "module_hotfixes = 1" > /etc/yum.repos.d/engineering.repo; \
     else \
-    bash /tmp/repo ${ENTERPRISE} ${RELEASE_NUMBER}; \
+    #bash /tmp/repo ${ENTERPRISE} ${RELEASE_NUMBER}; \
+    echo "Temporary offline? Replaced by next RUN"; \
     fi
+
+# Replace the repo setup section with direct repo creation
+# This is a temporary fix since dlm.mariadb.com stopped working.
+# When restoring the above echo -> bash needs to be restored as well.
+RUN printf "%s\n" \
+    "[mariadb]" \
+    "name = MariaDB" \
+    "baseurl = https://rpm.mariadb.org/11.8/rhel/8/\$basearch" \
+    "module_hotfixes = 1" \
+    "gpgkey = https://rpm.mariadb.org/RPM-GPG-KEY-MariaDB" \
+    "gpgcheck = 1" > /etc/yum.repos.d/mariadb.repo && \
+    rpm --import https://rpm.mariadb.org/RPM-GPG-KEY-MariaDB
 
 # Update System
 RUN dnf -y install epel-release && \
