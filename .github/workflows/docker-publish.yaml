@@ -73,6 +73,7 @@ jobs:
         build-args: |
           ENTERPRISE=false
           RELEASE_NUMBER=${{ matrix.version }}
+          REPO_TYPE=${{ matrix.repo_type }}
           DEV=false
           MCS_REPO=
           MCS_BASEURL=
