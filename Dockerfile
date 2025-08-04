@@ -61,8 +61,9 @@ RUN printf "%s\n" \
     rpm --import https://rpm.mariadb.org/RPM-GPG-KEY-MariaDB
 
 # Update System
-RUN dnf -y install epel-release && \
-    dnf -y upgrade
+#RUN dnf -y install epel-release && \
+#    dnf -y upgrade
+RUN dnf -y install epel-release
 
 # Install Various Packages/Tools
 RUN dnf -y install \
