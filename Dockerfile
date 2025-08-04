@@ -57,7 +57,7 @@ RUN MARIADB_MAJOR_MINOR=$(echo "${RELEASE_NUMBER}" | cut -d. -f1,2) && \
         printf "%s\n" \
         "[mariadb]" \
         "name = MariaDB (Archive)" \
-        "baseurl = https://archive.mariadb.org/mariadb-${RELEASE_NUMBER}/yum/rhel8-\$basearch/" \
+        "baseurl = https://archive.mariadb.org/mariadb-${RELEASE_NUMBER}/yum/rhel/8/\$basearch/" \
         "module_hotfixes = 1" \
         "gpgkey = https://archive.mariadb.org/PublicKey" \
         "gpgcheck = 1" > /etc/yum.repos.d/mariadb.repo && \
