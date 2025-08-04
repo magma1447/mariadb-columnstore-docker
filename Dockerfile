@@ -1,7 +1,7 @@
 # vim:set ft=dockerfile:
 
 # Setup A Template Image
-FROM rockylinux:8.8 as base
+FROM rockylinux:8 as base
 
 # Define Development ARGs
 ARG ENTERPRISE=${ENTERPRISE}
@@ -61,9 +61,8 @@ RUN printf "%s\n" \
     rpm --import https://rpm.mariadb.org/RPM-GPG-KEY-MariaDB
 
 # Update System
-#RUN dnf -y install epel-release && \
-#    dnf -y upgrade
-RUN dnf -y install epel-release
+RUN dnf -y install epel-release && \
+    dnf -y upgrade
 
 # Install Various Packages/Tools
 RUN dnf -y install \
