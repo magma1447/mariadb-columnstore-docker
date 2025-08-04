@@ -51,15 +51,27 @@ RUN if [[ "${DEV}" == true ]]; then \
 # Replace the repo setup section with direct repo creation
 # This is a temporary fix since dlm.mariadb.com stopped working.
 # When restoring the above echo -> bash needs to be restored as well.
+ARG REPO_TYPE=${REPO_TYPE}
 RUN MARIADB_MAJOR_MINOR=$(echo "${RELEASE_NUMBER}" | cut -d. -f1,2) && \
-    printf "%s\n" \
-    "[mariadb]" \
-    "name = MariaDB" \
-    "baseurl = https://rpm.mariadb.org/${MARIADB_MAJOR_MINOR}/rhel/8/\$basearch" \
-    "module_hotfixes = 1" \
-    "gpgkey = https://rpm.mariadb.org/RPM-GPG-KEY-MariaDB" \
-    "gpgcheck = 1" > /etc/yum.repos.d/mariadb.repo && \
-    rpm --import https://rpm.mariadb.org/RPM-GPG-KEY-MariaDB
+    if [[ "${REPO_TYPE}" == "archive" ]]; then \
+        printf "%s\n" \
+        "[mariadb]" \
+        "name = MariaDB (Archive)" \
+        "baseurl = https://archive.mariadb.org/mariadb-${RELEASE_NUMBER}/yum/rhel8-\$basearch/" \
+        "module_hotfixes = 1" \
+        "gpgkey = https://archive.mariadb.org/PublicKey" \
+        "gpgcheck = 1" > /etc/yum.repos.d/mariadb.repo && \
+        rpm --import https://archive.mariadb.org/PublicKey; \
+    else \
+        printf "%s\n" \
+        "[mariadb]" \
+        "name = MariaDB" \
+        "baseurl = https://rpm.mariadb.org/${MARIADB_MAJOR_MINOR}/rhel/8/\$basearch" \
+        "module_hotfixes = 1" \
+        "gpgkey = https://rpm.mariadb.org/RPM-GPG-KEY-MariaDB" \
+        "gpgcheck = 1" > /etc/yum.repos.d/mariadb.repo && \
+        rpm --import https://rpm.mariadb.org/RPM-GPG-KEY-MariaDB; \
+    fi
 
 # Update System
 RUN dnf -y install epel-release && \
